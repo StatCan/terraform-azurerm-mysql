@@ -1,0 +1,16 @@
+name                             = var.managed_mysql_name
+database_names                   = ["application"]
+dependencies                     = []
+administrator_login              = "mysqladmin"
+administrator_login_password     = var.managed_mysql_password
+sku_name                         = "GP_Gen5_4"
+mysql_version                    = "5.7"
+storagesize_mb                   = 256000
+location                         = "canadacentral"
+resource_group                   = "XX-XXXX-XXXX-XXX-XXX-RGP"
+subnet_id                        = var.managed_mysql_subnet_id
+firewall_rules                   = []
+public_network_access_enabled    = true
+ssl_enforcement_enabled          = true
+ssl_minimal_tls_version_enforced = "TLS1_2"
+key_vault_id                     = ""
