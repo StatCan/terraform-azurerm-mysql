@@ -94,12 +94,12 @@ variable "query_store_capture_interval" {
 
 variable "query_store_capture_mode" {
   description = "The query store capture mode, NONE means do not capture any statements"
-  default     = "on"
+  default     = "ALL"
 }
 
 variable "query_store_capture_utility_queries" {
   description = "Turning ON or OFF to capture all the utility queries that is executing in the system"
-  default     = "on"
+  default     = "YES"
 }
 
 variable "query_store_retention_period_in_days" {
