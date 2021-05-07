@@ -37,9 +37,9 @@ resource "azurerm_mysql_server" "mysql" {
   version    = var.mysql_version
   storage_mb = var.storagesize_mb
 
-  auto_grow_enabled            = true
-  backup_retention_days        = 35
-  geo_redundant_backup_enabled = false
+  auto_grow_enabled                 = true
+  backup_retention_days             = 35
+  geo_redundant_backup_enabled      = false
   infrastructure_encryption_enabled = false
 
   public_network_access_enabled    = var.public_network_access_enabled
