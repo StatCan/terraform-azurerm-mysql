@@ -61,29 +61,33 @@ resource "azurerm_key_vault" "keyvault" {
 module "myqlserver" {
   source = "git::https://github.com/canada-ca-terraform-modules/terraform-azurerm-mysql.git?ref=v1.0.0"
 
-  name           = "myqlservername"
+  name           = "mysqlservername"
   database_names = ["database"]
 
   dependencies = []
 
-  administrator_login          = "sqladmin"
-  administrator_login_password = var.managed_mysql_password
+  administrator_login          = var.administrator_login
+  administrator_login_password = var.administrator_login_password
 
   sku_name       = "GP_Gen5_4"
   mysql_version  = "5.7"
   storagesize_mb = 512000
 
   location       = var.location
-  resource_group = var.rg
+  resource_group = var.resource_group
   subnet_id      = var.subnet_id
   firewall_rules = []
 
-  active_directory_administrator_object_id = var.active_directory_admin_object_id
-  active_directory_administrator_tenant_id = var.active_directory_admin_tenant_id
+  active_directory_administrator_object_id = var.active_directory_administrator_object_id
+  active_directory_administrator_tenant_id = var.active_directory_administrator_tenant_id
 
   public_network_access_enabled    = true
   ssl_enforcement_enabled          = true
   ssl_minimal_tls_version_enforced = "TLS1_2"
 
   key_vault_id = azurerm_key_vault.keyvault.id
+
+  kv_name                                = var.kv_name
+  kv_rg                                  = var.kv_rg
+  storageaccountinfo_resource_group_name = var.storageaccountinfo_resource_group_name
 }
