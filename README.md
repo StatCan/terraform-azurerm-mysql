@@ -42,7 +42,7 @@ Examples for this module along with various configurations can be found in the [
 | subnet_id                                | string | n/a               | yes      | The ID of the subnet that the PostgreSQL server will be connected to.                                                 |
 | storageaccountinfo_resource_group_name   | string | n/a               | yes      | The storageaccountinfo resource group name.                                                                           |
 | tags                                     | map    | `"<map>"`         | n/a      | A mapping of tags to assign to the resource.                                                                          |
-| threat_enable                            | string | `"false"`         | no       | Enable Threat Detection Policy.                                                                                       |
+| keyvault_enable                            | string | `"false"`         | no       | Enable Threat Detection Policy.                                                                                       |
 | binlog_expire_logs_seconds               | int    | `"300"`           | no       | The number of seconds for automatic binary log file removal                                                           |
 | innodb_buffer_pool_size                  | int    | `"16106127360"`   | no       | The size in bytes of the buffer pool, the memory area where InnoDB caches table and index data                        |
 | max_allowed_packet                       | int    | `"536870912"`     | no       | The maximum size of one packet or any generated/intermediate string                                                   |

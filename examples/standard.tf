@@ -58,25 +58,27 @@ resource "azurerm_key_vault" "keyvault" {
   tags = {}
 }
 
-module "myqlserver" {
-  source = "git::https://github.com/canada-ca-terraform-modules/terraform-azurerm-mysql.git?ref=v1.0.0"
+module "mysql_example" {
+  source = "git::https://github.com/canada-ca-terraform-modules/terraform-azurerm-mysql.git?ref=master"
 
-  name           = "mysqlservername"
-  database_names = ["database"]
+  name = "mysqlservername"
+  database_names = [
+    { name = "mysqlservername", collation = "utf8_unicode_ci" }
+  ]
 
   dependencies = []
 
-  administrator_login          = var.administrator_login
+  administrator_login          = "mysqladmin"
   administrator_login_password = var.administrator_login_password
 
   sku_name       = "GP_Gen5_4"
-  mysql_version  = "5.7"
+  mysql_version  = "8.0"
   storagesize_mb = 512000
 
-  location       = var.location
-  resource_group = var.resource_group
-  subnet_id      = var.subnet_id
-  firewall_rules = []
+  location       = "canadacentral"
+  environment    = "dev"
+  resource_group = "mysql-dev-rg"
+  subnet_id      = local.containerCCSubnetRef
 
   active_directory_administrator_object_id = var.active_directory_administrator_object_id
   active_directory_administrator_tenant_id = var.active_directory_administrator_tenant_id
@@ -85,9 +87,11 @@ module "myqlserver" {
   ssl_enforcement_enabled          = true
   ssl_minimal_tls_version_enforced = "TLS1_2"
 
-  key_vault_id = azurerm_key_vault.keyvault.id
+  emails = []
 
-  kv_name                                = var.kv_name
-  kv_rg                                  = var.kv_rg
-  storageaccountinfo_resource_group_name = var.storageaccountinfo_resource_group_name
+  tags = {
+    "tier" = "k8s"
+  }
+
+  key_vault_id = azurerm_key_vault.keyvault.id
 }
