@@ -31,7 +31,7 @@ resource "azurerm_mysql_server" "mysql" {
   resource_group_name = var.resource_group
 
   administrator_login          = var.administrator_login
-  administrator_login_password = var.administrator_login_password
+  administrator_login_password = length(data.azurerm_key_vault_secret.sqlhstsvc) > 0 ? data.azurerm_key_vault_secret.sqlhstsvc[0].value : var.administrator_login_password
 
   sku_name   = var.sku_name
   version    = var.mysql_version
@@ -79,11 +79,11 @@ resource "azurerm_mysql_server_key" "mysql" {
 
 resource "azurerm_mysql_database" "mysql" {
   count               = length(var.database_names)
-  name                = var.database_names[count.index]
+  name                = var.database_names[count.index].name
   resource_group_name = var.resource_group
   server_name         = azurerm_mysql_server.mysql.name
   charset             = "utf8"
-  collation           = "utf8_unicode_ci"
+  collation           = lookup(var.database_names[count.index], "collation", "utf8_unicode_ci")
 }
 
 resource "azurerm_mysql_active_directory_administrator" "mysql" {
