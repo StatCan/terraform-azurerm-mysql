@@ -48,18 +48,16 @@ resource "azurerm_mysql_server" "mysql" {
 
   tags = var.tags
 
-  dynamic "threat_detection_policy" {
-    for_each = var.keyvault_enable == true ? toset([1]) : toset([])
-
-    content {
-      disabled_alerts      = []
-      email_account_admins = true
-      email_addresses      = var.emails
-      enabled              = true
-      retention_days       = var.retention_days
-      storage_endpoint     = data.azurerm_storage_account.storageaccountinfo[0].primary_blob_endpoint
-    }
+  threat_detection_policy {
+    disabled_alerts            = []
+    email_account_admins       = true
+    email_addresses            = var.emails
+    enabled                    = true
+    retention_days             = var.retention_days
+    storage_endpoint           = var.keyvault_enable ? data.azurerm_storage_account.storageaccountinfo[0].primary_blob_endpoint : azurerm_storage_account.mysql[0].primary_blob_endpoint
+    storage_account_access_key = var.keyvault_enable ? data.azurerm_storage_account.storageaccountinfo[0].primary_access_key : azurerm_storage_account.mysql[0].primary_access_key
   }
+
   identity {
     type = "SystemAssigned"
   }
