@@ -3,7 +3,7 @@
 resource "azurerm_storage_account" "mysql" {
   count = var.keyvault_enable ? 0 : 1
 
-  name                     = "${replace(var.name, "-", "")}mysql"
+  name                     = substr("${replace(var.name, "-", "")}mysql", 0, 24)
   location                 = var.location
   resource_group_name      = var.resource_group
   account_tier             = "Standard"
