@@ -80,7 +80,7 @@ resource "azurerm_mysql_database" "mysql" {
   name                = var.database_names[count.index].name
   resource_group_name = var.resource_group
   server_name         = azurerm_mysql_server.mysql.name
-  charset             = "utf8"
+  charset             = lookup(var.database_names[count.index], "charset", "utf8")
   collation           = lookup(var.database_names[count.index], "collation", "utf8_unicode_ci")
 }
 
