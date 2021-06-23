@@ -1,27 +1,8 @@
-# Part of a hack for module-to-module dependencies.
-# https://github.com/hashicorp/terraform/issues/1178#issuecomment-449158607
-# and
-# https://github.com/hashicorp/terraform/issues/1178#issuecomment-473091030
-# Make sure to add this null_resource.dependency_getter to the `depends_on`
-# attribute to all resource(s) that will be constructed first within this
-# module:
-resource "null_resource" "dependency_getter" {
-  triggers = {
-    my_dependencies = "${join(",", var.dependencies)}"
-  }
-
-  lifecycle {
-    ignore_changes = [
-      triggers["my_dependencies"],
-    ]
-  }
-}
-
 resource "azurerm_key_vault_key" "mysql" {
   name         = "${var.name}-tfex-key"
   key_vault_id = var.key_vault_id
-  key_type     = "RSA"
-  key_size     = 2048
+  key_type     = var.key_type
+  key_size     = var.key_size
   key_opts     = ["decrypt", "encrypt", "sign", "unwrapKey", "verify", "wrapKey"]
 }
 
@@ -160,28 +141,18 @@ resource "azurerm_mysql_configuration" "table_open_cache" {
 //
 
 resource "azurerm_mysql_firewall_rule" "mysql" {
-  count               = length(var.firewall_rules)
-  name                = azurerm_mysql_server.mysql.name
+  for_each            = toset(var.firewall_rules)
+  name                = replace(each.key, ".", "-")
   resource_group_name = var.resource_group
   server_name         = azurerm_mysql_server.mysql.name
-  start_ip_address    = var.firewall_rules[count.index]
-  end_ip_address      = var.firewall_rules[count.index]
+  start_ip_address    = each.key
+  end_ip_address      = each.key
 }
 
 resource "azurerm_mysql_virtual_network_rule" "mysql" {
-  name                = azurerm_mysql_server.mysql.name
+  for_each            = toset(var.subnet_ids)
+  name                = md5(each.key)
   resource_group_name = var.resource_group
   server_name         = azurerm_mysql_server.mysql.name
-  subnet_id           = var.subnet_id
-}
-
-# Part of a hack for module-to-module dependencies.
-# https://github.com/hashicorp/terraform/issues/1178#issuecomment-449158607
-resource "null_resource" "dependency_setter" {
-  # Part of a hack for module-to-module dependencies.
-  # https://github.com/hashicorp/terraform/issues/1178#issuecomment-449158607
-  # List resource(s) that will be constructed last within the module.
-  depends_on = [
-    "azurerm_mysql_server.mysql",
-  ]
+  subnet_id           = each.key
 }

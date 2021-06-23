@@ -18,7 +18,7 @@ Examples for this module along with various configurations can be found in the [
 ## Variables
 
 | Name                                     | Type   | Default           | Required | Description                                                                                                           |
-|------------------------------------------|--------|-------------------|----------|-----------------------------------------------------------------------------------------------------------------------|
+| ---------------------------------------- | ------ | ----------------- | -------- | --------------------------------------------------------------------------------------------------------------------- |
 | active_directory_administrator_object_id | string | `""`              | no       | The Active Directory Administrator Object ID.                                                                         |
 | active_directory_administrator_tenant_id | string | `""`              | no       | The Active Directory Administrator Tenant ID.                                                                         |
 | administrator_login                      | string | n/a               | yes      | The Administrator Login for the PostgreSQL Server.                                                                    |
@@ -27,6 +27,8 @@ Examples for this module along with various configurations can be found in the [
 | dependencies                             | list   | n/a               | yes      | Dependency management of resources.                                                                                   |
 | emails                                   | list   | n/a               | yes      | List of email addresses that should recieve the security reports.                                                     |
 | firewall_rules                           | list   | n/a               | yes      | Specifies the Start IP Address associated with this Firewall Rule.                                                    |
+| key_size                                 | number | `2048`            | no       | Size of key to create in Key Vault.                                                                                   |
+| key_type                                 | string | `"RSA"`           | no       | Type of key to create in the Key Vault.                                                                               |
 | key_vault_id                             | string | `""`              | no       | The Key Vault id for the Customer Managed Key.                                                                        |
 | kv_name                                  | string | `""`              | no       | The Key Vault name.                                                                                                   |
 | kv_rg                                    | string | `""`              | no       | The Key Vault resource group.                                                                                         |
@@ -39,10 +41,10 @@ Examples for this module along with various configurations can be found in the [
 | ssl_enforcement_enabled                  | string | `"true"`          | no       | Specifies if SSL should be enforced on connections.                                                                   |
 | ssl_minimal_tls_version_enforced         | string | `"TLS1_2"`        | no       | The mimimun TLS version to support on the sever.                                                                      |
 | storagesize_mb                           | string | `"640000"`        | no       | Specifies the version of PostgreSQL to use.                                                                           |
-| subnet_id                                | string | n/a               | yes      | The ID of the subnet that the PostgreSQL server will be connected to.                                                 |
+| subnet_ids                               | string | n/a               | yes      | The IDs of the subnet that the PostgreSQL server will be connected to.                                                |
 | storageaccountinfo_resource_group_name   | string | n/a               | yes      | The storageaccountinfo resource group name.                                                                           |
 | tags                                     | map    | `"<map>"`         | n/a      | A mapping of tags to assign to the resource.                                                                          |
-| keyvault_enable                            | string | `"false"`         | no       | Enable Threat Detection Policy.                                                                                       |
+| keyvault_enable                          | string | `"false"`         | no       | Enable Threat Detection Policy.                                                                                       |
 | binlog_expire_logs_seconds               | int    | `"300"`           | no       | The number of seconds for automatic binary log file removal                                                           |
 | innodb_buffer_pool_size                  | int    | `"16106127360"`   | no       | The size in bytes of the buffer pool, the memory area where InnoDB caches table and index data                        |
 | max_allowed_packet                       | int    | `"536870912"`     | no       | The maximum size of one packet or any generated/intermediate string                                                   |
@@ -55,8 +57,9 @@ Examples for this module along with various configurations can be found in the [
 
 ## History
 
-| Date     | Release    | Change                                                 |
-|----------|------------|--------------------------------------------------------|
-| 20210511 | 20210526.1 | The v1.0.2 release which adds optional support for ATP |
-| 20210211 | 20210211.1 | The v1.0.1 release of Terraform module                 |
-| 20210207 | 20210207.1 | The v1.0.0 release of Terraform module                 |
+| Date     | Release    | Change                                                                               |
+| -------- | ---------- | ------------------------------------------------------------------------------------ |
+| 20210623 | 20210623.1 | The v1.1.0 release which adds less destructive changes to firewall and subnet rules. |
+| 20210511 | 20210526.1 | The v1.0.2 release which adds optional support for ATP                               |
+| 20210211 | 20210211.1 | The v1.0.1 release of Terraform module                                               |
+| 20210207 | 20210207.1 | The v1.0.0 release of Terraform module                                               |
