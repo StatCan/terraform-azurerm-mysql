@@ -59,7 +59,8 @@ Examples for this module along with various configurations can be found in the [
 
 | Date     | Release    | Change                                                                               |
 | -------- | ---------- | ------------------------------------------------------------------------------------ |
-| 20210623 | 20210623.1 | The v1.1.0 release which adds less destructive changes to firewall and subnet rules. |
+| 20210625 | 20210625.1 | The v1.1.1 release which passes tags to other resources and fixes subnet rule names  |
+| 20210623 | 20210623.1 | The v1.1.0 release which adds less destructive changes to firewall and subnet rules  |
 | 20210511 | 20210526.1 | The v1.0.2 release which adds optional support for ATP                               |
 | 20210211 | 20210211.1 | The v1.0.1 release of Terraform module                                               |
 | 20210207 | 20210207.1 | The v1.0.0 release of Terraform module                                               |

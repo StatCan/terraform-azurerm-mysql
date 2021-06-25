@@ -4,6 +4,7 @@ resource "azurerm_key_vault_key" "mysql" {
   key_type     = var.key_type
   key_size     = var.key_size
   key_opts     = ["decrypt", "encrypt", "sign", "unwrapKey", "verify", "wrapKey"]
+  tags         = var.tags
 }
 
 resource "azurerm_mysql_server" "mysql" {
@@ -151,7 +152,7 @@ resource "azurerm_mysql_firewall_rule" "mysql" {
 
 resource "azurerm_mysql_virtual_network_rule" "mysql" {
   for_each            = toset(var.subnet_ids)
-  name                = md5(each.key)
+  name                = "r-${md5(each.key)}"
   resource_group_name = var.resource_group
   server_name         = azurerm_mysql_server.mysql.name
   subnet_id           = each.key
