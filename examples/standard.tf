@@ -72,6 +72,8 @@ module "mysql_example" {
   administrator_login          = "mysqladmin"
   administrator_login_password = var.administrator_login_password
 
+  keyvault_enable = false
+
   sku_name       = "GP_Gen5_4"
   mysql_version  = "8.0"
   storagesize_mb = 512000
