@@ -59,14 +59,15 @@ resource "azurerm_key_vault" "keyvault" {
 }
 
 module "mysql_example" {
-  source = "git::https://github.com/canada-ca-terraform-modules/terraform-azurerm-mysql.git?ref=master"
+  source = "git::https://github.com/canada-ca-terraform-modules/terraform-azurerm-mysql.git?ref=v2.0.0"
 
   name = "mysqlservername"
-  database_names = [
-    { name = "mysqlservername", collation = "utf8_unicode_ci" }
-  ]
-
-  dependencies = []
+  databases = {
+    mysqlservername1 = { collation = "utf8_unicode_ci" }
+    mysqlservername2 = { charset = "utf8" }
+    mysqlservername3 = { charset = "utf8", collation = "utf8_unicode_ci" }
+    mysqlservername4 = {}
+  }
 
   administrator_login          = "mysqladmin"
   administrator_login_password = var.administrator_login_password
@@ -78,7 +79,7 @@ module "mysql_example" {
   location       = "canadacentral"
   environment    = "dev"
   resource_group = "mysql-dev-rg"
-  subnet_id      = local.containerCCSubnetRef
+  subnet_ids     = [local.containerCCSubnetRef]
 
   active_directory_administrator_object_id = var.active_directory_administrator_object_id
   active_directory_administrator_tenant_id = var.active_directory_administrator_tenant_id

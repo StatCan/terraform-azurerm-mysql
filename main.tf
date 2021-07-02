@@ -58,12 +58,12 @@ resource "azurerm_mysql_server_key" "mysql" {
 }
 
 resource "azurerm_mysql_database" "mysql" {
-  count               = length(var.database_names)
-  name                = var.database_names[count.index].name
+  for_each            = var.databases
+  name                = each.key
   resource_group_name = var.resource_group
   server_name         = azurerm_mysql_server.mysql.name
-  charset             = lookup(var.database_names[count.index], "charset", "utf8")
-  collation           = lookup(var.database_names[count.index], "collation", "utf8_unicode_ci")
+  charset             = lookup(each.value, "charset", "utf8")
+  collation           = lookup(each.value, "collation", "utf8_unicode_ci")
 }
 
 resource "azurerm_mysql_active_directory_administrator" "mysql" {
