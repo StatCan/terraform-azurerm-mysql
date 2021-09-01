@@ -36,8 +36,8 @@ resource "azurerm_mysql_server" "mysql" {
     email_addresses            = var.emails
     enabled                    = true
     retention_days             = var.retention_days
-    storage_endpoint           = var.keyvault_enable ? data.azurerm_storage_account.storageaccountinfo[0].primary_blob_endpoint : azurerm_storage_account.mysql[0].primary_blob_endpoint
-    storage_account_access_key = var.keyvault_enable ? data.azurerm_storage_account.storageaccountinfo[0].primary_access_key : azurerm_storage_account.mysql[0].primary_access_key
+    storage_endpoint           = var.kv_workflow_enable ? data.azurerm_storage_account.saloggingname[0].primary_blob_endpoint : azurerm_storage_account.mysql[0].primary_blob_endpoint
+    storage_account_access_key = var.kv_workflow_enable ? data.azurerm_storage_account.saloggingname[0].primary_access_key : azurerm_storage_account.mysql[0].primary_access_key
   }
 
   identity {
