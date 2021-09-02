@@ -25,6 +25,7 @@ Examples for this module along with various configurations can be found in the [
 | administrator_login_password             | string           | n/a               | yes      | The Password associated with the administrator_login for the PostgreSQL Server.                                           |
 | databases                                | map(map(string)) | n/a               | yes      | The name, collatation, and charset of the PostgreSQL database(s). (defaults: charset="utf8", collation="utf8_unicode_ci") |
 | emails                                   | list             | n/a               | yes      | List of email addresses that should recieve the security reports.                                                         |
+| ip_rules                                 | list             | n/a               | yes      | List of public IP or IP ranges in CIDR Format.                                                                            |
 | firewall_rules                           | list             | n/a               | yes      | Specifies the Start IP Address associated with this Firewall Rule.                                                        |
 | key_size                                 | number           | `2048`            | no       | Size of key to create in Key Vault.                                                                                       |
 | key_type                                 | string           | `"RSA"`           | no       | Type of key to create in the Key Vault.                                                                                   |
@@ -66,6 +67,7 @@ Examples for this module along with various configurations can be found in the [
 
 | Date     | Release    | Change                                                                                                |
 | -------- | ---------- | ----------------------------------------------------------------------------------------------------- |
+| 20210902 | 20210902.1 | The v2.1.1 release adds an ip_rules variable                                                          |
 | 20210831 | 20210831.1 | The v2.1.0 release updates kv workflow, naming, and examples                                          |
 | 20210702 | 20210702.1 | The v2.0.0 release prevents destruction of databases when one or more are added/removed from the list |
 | 20210625 | 20210625.1 | The v1.1.1 release which passes tags to other resources and fixes subnet rule names                   |
