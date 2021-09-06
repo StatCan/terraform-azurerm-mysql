@@ -34,7 +34,7 @@ resource "azurerm_mysql_server" "mysql" {
     disabled_alerts            = []
     email_account_admins       = true
     email_addresses            = var.emails
-    enabled                    = true
+    enabled                    = var.diagnostics != null
     retention_days             = var.retention_days
     storage_endpoint           = var.kv_workflow_enable ? data.azurerm_storage_account.saloggingname[0].primary_blob_endpoint : azurerm_storage_account.mysql[0].primary_blob_endpoint
     storage_account_access_key = var.kv_workflow_enable ? data.azurerm_storage_account.saloggingname[0].primary_access_key : azurerm_storage_account.mysql[0].primary_access_key
@@ -49,7 +49,6 @@ resource "azurerm_mysql_server" "mysql" {
       tags
     ]
   }
-
 }
 
 resource "azurerm_mysql_server_key" "mysql" {

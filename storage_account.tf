@@ -1,7 +1,7 @@
 # Storage Accounts
 
 resource "azurerm_storage_account" "mysql" {
-  count = var.kv_workflow_enable ? 0 : 1
+  count = (var.diagnostics != null) && var.kv_workflow_enable ? 0 : 1
 
   name                      = substr("${replace(var.name, "-", "")}mysql", 0, 24)
   location                  = var.location
@@ -31,7 +31,7 @@ resource "azurerm_storage_account" "mysql" {
 }
 
 resource "azurerm_storage_container" "mysql" {
-  count = var.kv_workflow_enable ? 0 : 1
+  count = (var.diagnostics != null) && var.kv_workflow_enable ? 0 : 1
 
   name                  = "${replace(var.name, "-", "")}mysql"
   storage_account_name  = azurerm_storage_account.mysql[count.index].name

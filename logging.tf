@@ -21,6 +21,8 @@ data "azurerm_monitor_diagnostic_categories" "default" {
 }
 
 resource "azurerm_monitor_diagnostic_setting" "namespace" {
+  count = var.diagnostics != null ? 1 : 0
+
   name                           = "${var.name}-mysql-diag"
   target_resource_id             = azurerm_mysql_server.mysql.id
   log_analytics_workspace_id     = local.parsed_diag.log_analytics_id
