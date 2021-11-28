@@ -17,47 +17,52 @@ Examples for this module along with various configurations can be found in the [
 
 ## Variables
 
-| Name                                     | Type             | Default             | Required | Description                                                                                                                     |
-| ---------------------------------------- | ---------------- | ------------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------- |
-| active_directory_administrator_object_id | string           | `""`                | no       | The Active Directory Administrator Object ID.                                                                                   |
-| active_directory_administrator_tenant_id | string           | `""`                | no       | The Active Directory Administrator Tenant ID.                                                                                   |
-| administrator_login                      | string           | n/a                 | yes      | The Administrator Login for the MySQL Server.                                                                                   |
-| administrator_login_password             | string           | n/a                 | yes      | The Password associated with the administrator_login for the MySQL Server.                                                      |
-| databases                                | map(map(string)) | n/a                 | yes      | The name, collatation, and charset of the MySQL database(s). (defaults: charset="UTF8", collation="English_United States.1252") |
-| diagnostics                              | object()         | null                | no       | Diagnostic settings for those resources that support it.                                                                        |
-| emails                                   | list             | n/a                 | yes      | List of email addresses that should recieve the security reports.                                                               |
-| ip_rules                                 | list             | n/a                 | yes      | List of public IP or IP ranges in CIDR Format.                                                                                  |
-| firewall_rules                           | list             | n/a                 | yes      | Specifies the Start IP Address associated with this Firewall Rule.                                                              |
-| key_size                                 | number           | `2048`              | no       | Size of key to create in Key Vault.                                                                                             |
-| key_type                                 | string           | `"RSA"`             | no       | Type of key to create in the Key Vault.                                                                                         |
-| key_vault_id                             | string           | `""`                | no       | The Key Vault id for the Customer Managed Key.                                                                                  |
-| kv_create                                | string           | `"false"`           | no       | If kv_create is set to `true` then enable creation of new key vault else `false` then point to an existing one.                 |
-| kv_name                                  | string           | `""`                | no       | The name to be used for the Key Vault against the MySQL instance.                                                               |
-| kv_rg                                    | string           | `""`                | no       | The resource group to be used for the Key Vault against the MySQL instance.                                                     |
-| kv_tenant_id                             | string           | `""`                | yes      | The Tenant ID to be used for the Key Vault against the MySQL instance.                                                          |
-| kv_workflow_enable                       | string           | `"false"`           | no       | If kv_workflow_enable is set to `true` then enable storing pointers to secrets in key vault else `false` then store as default. |
-| kv_workflow_name                         | string           | `""`                | no       | The name used for the Key Vault Workflow.                                                                                       |
-| kv_workflow_rg                           | string           | `""`                | no       | The resource group used for the Key Vault Workflow.                                                                             |
-| kv_workflow_salogging_rg                 | string           | n/a                 | yes      | The storage account resource group used for the Key Vault Workflow.                                                             |
-| location                                 | string           | `"canadacentral"`   | no       | Specifies the supported Azure location where the resource exists.                                                               |
-| mysql_version                            | string           | `"8.0"`             | no       | The version of the MySQL Server.                                                                                                |
-| name                                     | string           | n/a                 | yes      | The name of the MySQL Server.                                                                                                   |
-| public_network_access_enabled            | string           | `"false"`           | no       | Whether or not public network access is allowed for this server.                                                                |
-| resource_group                           | string           | n/a                 | yes      | The name of the resource group in which to create the MySQL Server.                                                             |
-| retention_days                           | number           | `90`                | yes      | Specifies the retention in days for logs for this MySQL Server.                                                                 |
-| sku_name                                 | string           | `"GP_Gen5_4"`       | no       | Specifies the SKU Name for this MySQL Server.                                                                                   |
-| ssl_enforcement_enabled                  | string           | `"true"`            | no       | Specifies if SSL should be enforced on connections.                                                                             |
-| ssl_minimal_tls_version_enforced         | string           | `"TLS1_2"`          | no       | The mimimun TLS version to support on the sever.                                                                                |
-| storagesize_mb                           | string           | `"640000"`          | no       | Specifies the version of MySQL to use.                                                                                          |
-| subnet_ids                               | list             | n/a                 | yes      | The IDs of the subnets that the MySQL server will be connected to.                                                              |
-| tags                                     | map              | `"<map>"`           | n/a      | A mapping of tags to assign to the resource.                                                                                    |
-| vnet_cidr                                | string           | `172.15.0.0/16`     | n/a      | Virtual Network CIDR.                                                                                                           |
-| vnet_create                              | string           | `"false"`           | n/a      | If vnet_create is set to `true` then enable creation of new vnet else `false` then point to an existing one.                    |
-| vnet_name                                | string           | n/a                 | yes      | Name for your Virtual Network.                                                                                                  |
-| vnet_rg                                  | string           | `""`                | n/a      | The Virtual Network resource group.                                                                                             |
-| subnet_address_prefixes                  | list             | `["172.15.8.0/22"]` | n/a      | Virtual Network Address Prefixes.                                                                                               |
-| subnet_create                            | string           | `"false"`           | n/a      | If subnet_create is set to `true` then enable creation of new subnet else `false` then point to an existing one.                |
-| subnet_name                              | string           | n/a`                | yes      | Name for your Subnet.                                                                                                           |
+| Name                                     | Type             | Default           | Required | Description                                                                                                              |
+| ---------------------------------------- | ---------------- | ----------------- | -------- | ------------------------------------------------------------------------------------------------------------------------ |
+| active_directory_administrator_object_id | string           | `""`              | no       | The Active Directory Administrator Object ID.                                                                            |
+| active_directory_administrator_tenant_id | string           | `""`              | no       | The Active Directory Administrator Tenant ID.                                                                            |
+| administrator_login                      | string           | n/a               | yes      | The Administrator Login for the MySQL Server.                                                                            |
+| administrator_login_password             | string           | n/a               | yes      | The Password associated with the administrator_login for the MySQL Server.                                               |
+| databases                                | map(map(string)) | n/a               | yes      | The name, collation, and character set of the MySQL database(s). (defaults: charset='utf8', collation='utf8_unicode_ci') |
+| diagnostics                              | object()         | null              | no       | Diagnostic settings for those resources that support it.                                                                 |
+| emails                                   | list             | n/a               | yes      | List of email addresses that should recieve the security reports.                                                        |
+| ip_rules                                 | list             | n/a               | yes      | List of public IP or IP ranges in CIDR Format.                                                                           |
+| firewall_rules                           | list             | n/a               | yes      | Specifies the Start IP Address associated with this Firewall Rule.                                                       |
+| location                                 | string           | `"canadacentral"` | no       | Specifies the supported Azure location where the resource exists.                                                        |
+| name                                     | string           | n/a               | yes      | The name of the MySQL Server.                                                                                            |
+| mysql_version                            | string           | `"8.0"`           | no       | The version of the MySQL Server.                                                                                         |
+| public_network_access_enabled            | string           | `"false"`         | no       | Whether or not public network access is allowed for this server.                                                         |
+| resource_group                           | string           | n/a               | yes      | The name of the resource group in which to create the MySQL Server.                                                      |
+| retention_days                           | number           | `90`              | yes      | Specifies the retention in days for logs for this MySQL Server.                                                          |
+| sku_name                                 | string           | `"GP_Gen5_4"`     | no       | Specifies the SKU Name for this MySQL Server.                                                                            |
+| ssl_enforcement_enabled                  | string           | `"true"`          | no       | Specifies if SSL should be enforced on connections.                                                                      |
+| ssl_minimal_tls_version_enforced         | string           | `"TLS1_2"`        | no       | The mimimun TLS version to support on the sever.                                                                         |
+| storagesize_mb                           | string           | `"640000"`        | no       | Specifies the version of MySQL to use.                                                                                   |
+| subnet_ids                               | list             | n/a               | yes      | The IDs of the subnets that the MySQL server will be connected to.                                                       |
+| tags                                     | map              | `"<map>"`         | no       | A mapping of tags to assign to the resource.                                                                             |
+
+## Variables (Advanced)
+
+| Name                         | Type   | Default             | Required | Description                                                                                                       |
+| ---------------------------- | ------ | ------------------- | -------- | ----------------------------------------------------------------------------------------------------------------- |
+| kv_db_create                 | string | null                | no       | Flag kv_db_create can either be `null` (default), `true` (create key vault), or `false` (use existing key vault). |
+| kv_db_name                   | string | null                | no       | The key vault name to be used when kv_db_create is either set to `true` or `false`.                               |
+| kv_db_rg                     | string | null                | no       | The key vault resource group to be used when kv_db_create is either set to `true` or `false`."                    |
+| kv_db_tenant_id              | string | null                | no       | The key vault tenant id to be used when kv_db_create is either set to `true` or `false`.                          |
+| kv_db_key_size               | number | `2048`              | no       | The key vault size to be used when kv_db_create is either set to `true` or `false`.                               |
+| kv_db_key_type               | string | `"RSA"`             | no       | The key vault type to be used when kv_db_create is either set to `true` or `false`.                               |
+| kv_pointer_enable            | string | `"false"`           | no       | Flag kv_pointer_enable can either be `true` (state from key vault), or `false` (state from terraform).            |
+| kv_pointer_name              | string | null                | no       | The key vault name to be used when kv_pointer_enable is set to `true`.                                            |
+| kv_workflow_rg               | string | null                | no       | The key vault resource group to be used when kv_pointer_enable is set to `true`.                                  |
+| kv_pointer_logging_name      | string | null                | no       | The logging name to be looked up in key vault when kv_pointer_enable is set to `true`.                            |
+| kv_pointer_logging_rg        | string | null                | no       | The logging resource group name to be used when kv_pointer_enable is set to `true`.                               |
+| kv_pointer_sqladmin_password | string | null                | no       | The sqladmin password to be looked up in key vault when kv_pointer_enable is set to `true`."                      |
+| vnet_create                  | string | null                | no       | Flag vnet_create can either be `null` (default), `true` (create vnet), or `false` (use existing vnet).            |
+| vnet_cidr                    | string | `172.15.0.0/16`     | no       | Virtual Network CIDR.                                                                                             |
+| vnet_name                    | string | null                | no       | The vnet name to be used when vnet_create is either set to `true` or `false`.                                     |
+| vnet_rg                      | string | null                | no       | The vnet resource group to be used when vnet_create is either set to `true` or `false`.                           |
+| subnet_name                  | string | null                | no       | The subnet name to be used when vnet_create is either set to `true` or `false`.                                   |
+| subnet_address_prefixes      | list   | `["172.15.8.0/22"]` | no       | Virtual Network Address Prefixes.                                                                                 |
 
 ## Variables (MySQL Configuration)
 
@@ -76,6 +81,7 @@ Examples for this module along with various configurations can be found in the [
 
 | Date     | Release | Change                                                                                     |
 | -------- | ------- | ------------------------------------------------------------------------------------------ |
+| 20211128 | v4.0.0  | Final refactor with sane defaults and optional advanced logic                              |
 | 20211004 | v3.0.0  | Release makes clear some of the more advanced logic                                        |
 | 20210907 | v2.2.0  | Release moves the key vault into the module                                                |
 | 20210905 | v2.1.2  | Release adds ability to opt out of diagnostics                                             |

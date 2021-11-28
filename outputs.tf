@@ -6,12 +6,12 @@ output "name" {
   value = azurerm_mysql_server.mysql.name
 }
 
-output "administrator_login" {
-  value = azurerm_mysql_server.mysql.administrator_login
-}
-
 output "fqdn" {
   value = azurerm_mysql_server.mysql.fqdn
+}
+
+output "administrator_login" {
+  value = "${azurerm_mysql_server.mysql.administrator_login}@${azurerm_mysql_server.mysql.name}"
 }
 
 output "identity_tenant_id" {

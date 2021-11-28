@@ -1,22 +1,13 @@
-locals {
-  mysql_diag = {
-    storage_account_id = var.kv_workflow_enable ? data.azurerm_storage_account.saloggingname[0].id : azurerm_storage_account.mysql[0].id
-    metric             = ["all"]
-    log                = ["all"]
-  }
-}
-
 resource "azurerm_key_vault" "mysql" {
-  count = var.kv_create ? 1 : 0
+  count = (var.kv_db_create == true) ? 1 : 0
 
-  name                        = var.kv_name
+  name                        = var.kv_db_name
   location                    = var.location
-  resource_group_name         = var.kv_rg
+  resource_group_name         = var.kv_db_rg
   enabled_for_disk_encryption = true
-  tenant_id                   = var.kv_tenant_id
+  tenant_id                   = var.kv_db_tenant_id
   soft_delete_retention_days  = 90
   purge_protection_enabled    = true
-  soft_delete_enabled         = true
 
   sku_name = "standard"
 
@@ -44,7 +35,7 @@ resource "azurerm_key_vault" "mysql" {
   }
 
   access_policy {
-    tenant_id = var.kv_tenant_id
+    tenant_id = var.kv_db_tenant_id
     object_id = data.azurerm_client_config.current.object_id
 
     key_permissions = [
@@ -67,57 +58,15 @@ resource "azurerm_key_vault" "mysql" {
   }
 
   network_acls {
-    default_action             = "Deny"
+    default_action             = var.vnet_create == null ? "Allow" : "Deny"
     bypass                     = "AzureServices"
     ip_rules                   = var.ip_rules
-    virtual_network_subnet_ids = [var.subnet_create ? azurerm_subnet.mysql[0].id : data.azurerm_subnet.mysql[0].id]
+    virtual_network_subnet_ids = var.vnet_create == null ? [] : [var.vnet_create ? azurerm_subnet.mysql[0].id : data.azurerm_subnet.mysql[0].id]
   }
 
   tags = var.tags
 
   lifecycle {
     ignore_changes = [tags]
-  }
-}
-
-data "azurerm_monitor_diagnostic_categories" "mysql_diag_cat" {
-  count = var.kv_create ? 1 : 0
-
-  resource_id = azurerm_key_vault.mysql[0].id
-}
-
-resource "azurerm_monitor_diagnostic_setting" "mysql_diag_setting" {
-  count = var.kv_create ? 1 : 0
-
-  name               = "${var.name}-keyvault-diag"
-  target_resource_id = azurerm_key_vault.mysql[0].id
-  storage_account_id = local.mysql_diag.storage_account_id
-
-  dynamic "log" {
-    for_each = data.azurerm_monitor_diagnostic_categories.mysql_diag_cat[0].logs
-
-    content {
-      category = log.value
-      enabled  = contains(local.mysql_diag.log, "all") || contains(local.mysql_diag.log, log.value)
-
-      retention_policy {
-        enabled = true
-        days    = 90
-      }
-    }
-  }
-
-  dynamic "metric" {
-    for_each = data.azurerm_monitor_diagnostic_categories.mysql_diag_cat[0].metrics
-
-    content {
-      category = metric.value
-      enabled  = contains(local.mysql_diag.metric, "all") || contains(local.mysql_diag.metric, metric.value)
-
-      retention_policy {
-        enabled = true
-        days    = 90
-      }
-    }
   }
 }

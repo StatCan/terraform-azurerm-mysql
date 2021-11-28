@@ -50,73 +50,18 @@ variable "firewall_rules" {
   description = "(Required) Specifies the Start IP Address associated with this Firewall Rule."
 }
 
-variable "key_size" {
-  type        = number
-  description = "Size of key to create in Key Vault."
-  default     = 2048
-}
-
-variable "key_type" {
-  description = "Type of key to create in the Key Vault."
-  default     = "RSA"
-}
-
-variable "key_vault_id" {
-  description = "(Optional) The Key Vault id for the Customer Managed Key."
-  default     = ""
-}
-
-variable "kv_create" {
-  description = "(Optional) If kv_create is set to `true` then enable creation of new key vault else `false` then point to an existing one."
-  default     = false
-}
-
-variable "kv_name" {
-  description = "(Optional) The name to be used for the Key Vault against the MySQL instance."
-  default     = ""
-}
-
-variable "kv_rg" {
-  description = "(Optional) The resource group to be used for the Key Vault against the MySQL instance."
-  default     = ""
-}
-
-variable "kv_tenant_id" {
-  description = "(Required) The Tenant ID to be used for the Key Vault against the MySQL instance."
-}
-
-variable "kv_workflow_enable" {
-  description = "(Optional) If kv_workflow_enable is set to `true` then enable storing pointers to secrets in key vault else `false` then store as default."
-  default     = false
-}
-
-variable "kv_workflow_name" {
-  description = "(Optional) The name used for the Key Vault Workflow."
-  default     = ""
-}
-
-variable "kv_workflow_rg" {
-  description = "(Optional) The resource group used for the Key Vault Workflow."
-  default     = ""
-}
-
-variable "kv_workflow_salogging_rg" {
-  description = "(Optional) The storage account resource group used for the Key Vault Workflow."
-  default     = ""
-}
-
 variable "location" {
   description = "(Optional) Specifies the supported Azure location where the resource exists."
   default     = "canadacentral"
 }
 
+variable "name" {
+  description = "(Required) The name of the MySQL Server."
+}
+
 variable "mysql_version" {
   description = "(Required) The version of the MySQL Server."
   default     = "8.0"
-}
-
-variable "name" {
-  description = "(Required) The name of the MySQL Server."
 }
 
 variable "public_network_access_enabled" {
@@ -166,25 +111,113 @@ variable "tags" {
   }
 }
 
+############################################################
+# kv_db_create (used for customer managed key)
+# => ``null` then no key vault created or attached (default)
+# => ``true` then enable creation of new key vault
+# => ``false` then point to existing key vault
+############################################################
+
+variable "kv_db_create" {
+  description = "(Optional) Flag kv_db_create can either be `null` (default), `true` (create key vault), or `false` (use existing key vault)."
+  default     = null
+}
+
+variable "kv_db_name" {
+  description = "(Optional) The key vault name to be used when kv_db_create is either set to `true` or `false`."
+  default     = null
+}
+
+variable "kv_db_rg" {
+  description = "(Optional) The key vault resource group to be used when kv_db_create is either set to `true` or `false`."
+  default     = null
+}
+
+variable "kv_db_tenant_id" {
+  description = "(Optional) The key vault tenant id to be used when kv_db_create is either set to `true` or `false`."
+  default     = null
+}
+
+variable "kv_db_key_size" {
+  description = "(Optional) The key vault size to be used when kv_db_create is either set to `true` or `false`."
+  type        = number
+  default     = 2048
+}
+
+variable "kv_db_key_type" {
+  description = "(Optional) The key vault type to be used when kv_db_create is either set to `true` or `false`."
+  default     = "RSA"
+}
+
+######################################################################
+# kv_pointer_enable (pointers in key vault for secrets state)
+# => ``true` then state from key vault is used for creation
+# => ``false` then state from terraform is used for creation (default)
+######################################################################
+
+variable "kv_pointer_enable" {
+  description = "(Optional) Flag kv_pointer_enable can either be `true` (state from key vault), or `false` (state from terraform)."
+  default     = false
+}
+
+variable "kv_pointer_name" {
+  description = "(Optional) The key vault name to be used when kv_pointer_enable is set to `true`."
+  default     = null
+}
+
+variable "kv_pointer_rg" {
+  description = "(Optional) The key vault resource group to be used when kv_pointer_enable is set to `true`."
+  default     = null
+}
+
+variable "kv_pointer_logging_name" {
+  description = "(Optional) The logging name to be looked up in key vault when kv_pointer_enable is set to `true`."
+  default     = null
+}
+
+variable "kv_pointer_logging_rg" {
+  description = "(Optional) The logging resource group name to be used when kv_pointer_enable is set to `true`."
+  default     = null
+}
+
+variable "kv_pointer_sqladmin_password" {
+  description = "(Optional) The sqladmin password to be looked up in key vault when kv_pointer_enable is set to `true`."
+  default     = null
+}
+
+#########################################################
+# vnet_create (used for storage account network rule)
+# => ``null` then no vnet created or attached (default)
+# => ``true` then enable creation of new vnet
+# => ``false` then point to existing vnet
+#########################################################
+
+variable "vnet_create" {
+  description = "(Optional) Flag vnet_create can either be `null` (default), `true` (create vnet), or `false` (use existing vnet)."
+  default     = null
+}
+
 variable "vnet_cidr" {
   description = "Virtual Network CIDR."
   type        = string
   default     = "172.15.0.0/16"
 }
 
-variable "vnet_create" {
-  description = "(Optional) If vnet_create is set to `true` then enable creation of new vnet else `false` then point to an existing one."
-  default     = false
-}
-
 variable "vnet_name" {
-  description = "(Optional) Name for your Virtual Network."
+  description = "(Optional) The vnet name to be used when vnet_create is either set to `true` or `false`."
   type        = string
+  default     = null
 }
 
 variable "vnet_rg" {
-  description = "(Optional) The Virtual Network resource group."
-  default     = ""
+  description = "(Optional) The vnet resource group to be used when vnet_create is either set to `true` or `false`."
+  default     = null
+}
+
+variable "subnet_name" {
+  description = "(Optional) The subnet name to be used when vnet_create is either set to `true` or `false`."
+  type        = string
+  default     = null
 }
 
 variable "subnet_address_prefixes" {
@@ -193,17 +226,9 @@ variable "subnet_address_prefixes" {
   default     = ["172.15.8.0/22"]
 }
 
-variable "subnet_create" {
-  description = "(Optional) If subnet_create is set to `true` then enable creation of new subnet else `false` then point to an existing one."
-  default     = false
-}
-
-variable "subnet_name" {
-  description = "(Optional) Name for your Subnet."
-  type        = string
-}
-
+#########################################################
 # Parameters
+#########################################################
 
 variable "innodb_buffer_pool_size" {
   description = "(Optional) The size in bytes of the buffer pool, the memory area where InnoDB caches table and index data."

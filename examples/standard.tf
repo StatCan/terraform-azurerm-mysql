@@ -3,7 +3,7 @@ provider "azurerm" {
 }
 
 module "mysql_example" {
-  source = "git::https://github.com/canada-ca-terraform-modules/terraform-azurerm-mysql.git?ref=v3.0.0"
+  source = "git::https://github.com/canada-ca-terraform-modules/terraform-azurerm-mysql.git?ref=v4.0.0"
 
   name = "mysqlservername"
   databases = {
@@ -19,26 +19,6 @@ module "mysql_example" {
   # active_directory_administrator_object_id = "XX-XXXX-XXXX-XXX-XXX"
   # active_directory_administrator_tenant_id = "XX-XXXX-XXXX-XXX-XXX"
 
-  #########################################################
-  # kv_create
-  # => `true` then enable creation of new key vault
-  # => `false` then point to existing key vault
-  #########################################################
-  kv_create       = true
-  kv_tenant_id = "XX-XXXX-XXXX-XXX-XXX"
-  kv_name      = "mysql-keyvault"
-  kv_rg        = "XX-XXXX-XXXX-XXX-XXX"
-
-  #########################################################
-  # kv_workflow_enable
-  # => ``true` then enable storing pointers to secrets in key vault
-  # => ``false` then store as default
-  #########################################################
-  kv_workflow_enable = false
-  # kv_workflow_name             = "XXXXX"
-  # kv_workflow_rg               = "XX-XXXX-XXXX-XXX-XXX"
-  # kv_workflow_salogging_rg     = "XX-XXXX-XXXX-XXX-XXX"
-
   sku_name       = "GP_Gen5_4"
   mysql_version  = "8.0"
   storagesize_mb = 512000
@@ -49,25 +29,6 @@ module "mysql_example" {
 
   ip_rules       = []
   firewall_rules = []
-
-  #########################################################
-  # vnet_create
-  # => ``true` then enable creation of new vnet
-  # => ``false` then point to existing vnet
-  #########################################################
-  vnet_create = false
-  # vnet_cidr   = "172.15.0.0/16"
-  vnet_name   = "mysql-vnet"
-  vnet_rg     = "XX-XXXX-XXXX-XXX-XXX"
-
-  #########################################################
-  # subnet_create
-  # => ``true` then enable creation of new subnet
-  # => ``false` then point to existing subnet
-  #########################################################
-  subnet_create = false
-  subnet_name   = "mysql-subnet"
-  # subnet_address_prefixes = ["172.15.8.0/22"]
 
   public_network_access_enabled    = true
   ssl_enforcement_enabled          = true
@@ -86,4 +47,42 @@ module "mysql_example" {
   tags = {
     "tier" = "k8s"
   }
+
+  ############################################################
+  # kv_db_create (used for customer managed key)
+  # => ``null` then no key vault created or attached (default)
+  # => ``true` then enable creation of new key vault
+  # => ``false` then point to existing key vault
+  ############################################################
+  # kv_db_create    = true
+  # kv_db_name      = "kvdbname"
+  # kv_db_rg        = "kvdvrg"
+  # kv_db_tenant_id = "XX-XXXX-XXXX-XXX-XXX"
+  # kv_db_key_size  = 2048
+  # kv_db_key_type  = "RSA"
+
+  ######################################################################
+  # kv_pointer_enable (pointers in key vault for secrets state)
+  # => ``true` then state from key vault is used for creation
+  # => ``false` then state from terraform is used for creation (default)
+  ######################################################################
+  # kv_pointer_enable            = false
+  # kv_pointer_name              = "kvpointername"
+  # kv_pointer_rg                = "kvpointerrg"
+  # kv_pointer_logging_name      = "saloggingname"
+  # kv_pointer_logging_rg        = "saloggingrg"
+  # kv_pointer_sqladmin_password = "sqlhstsvc"
+
+  #########################################################
+  # vnet_create (used for storage account network rule)
+  # => ``null` then no vnet created or attached (default)
+  # => ``true` then enable creation of new vnet
+  # => ``false` then point to existing vnet
+  #########################################################
+  # vnet_create = false
+  # vnet_cidr   = "172.15.0.0/16"
+  # vnet_name   = "mysql-vnet"
+  # vnet_rg     = "XX-XXXX-XXXX-XXX-XXX"
+  # subnet_name   = "mysql-subnet"
+  # subnet_address_prefixes = ["172.15.8.0/22"]
 }
