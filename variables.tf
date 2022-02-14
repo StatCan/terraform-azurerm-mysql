@@ -34,6 +34,11 @@ variable "diagnostics" {
   default = null
 }
 
+variable "storage_account_name" {
+  description = "Name of the storage account for diagnostics (optional, if not provided the name is auto-generated)"
+  default     = null
+}
+
 variable "emails" {
   type        = list(string)
   description = "(Required) List of email addresses that should recieve the security reports."
