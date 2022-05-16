@@ -274,3 +274,8 @@ variable "table_open_cache" {
   description = "(Optional) The number of open tables for all threads."
   default     = 5000
 }
+
+variable "redirect_enabled" {
+  description = "(Optional) Indicate server support redirection."
+  default     = "OFF"
+}

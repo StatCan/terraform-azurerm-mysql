@@ -7,6 +7,12 @@ resource "azurerm_key_vault_key" "mysql" {
   key_size     = var.kv_db_key_size
   key_opts     = ["decrypt", "encrypt", "sign", "unwrapKey", "verify", "wrapKey"]
   tags         = var.tags
+
+  lifecycle {
+    ignore_changes = [
+      tags
+    ]
+  }
 }
 
 resource "azurerm_mysql_server" "mysql" {
@@ -140,6 +146,13 @@ resource "azurerm_mysql_configuration" "table_open_cache" {
   resource_group_name = var.resource_group
   server_name         = azurerm_mysql_server.mysql.name
   value               = var.table_open_cache
+}
+
+resource "azurerm_mysql_configuration" "redirect_enabled" {
+  name                = "redirect_enabled"
+  resource_group_name = var.resource_group
+  server_name         = azurerm_mysql_server.mysql.name
+  value               = var.redirect_enabled
 }
 
 #########################################################################################

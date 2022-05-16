@@ -76,11 +76,14 @@ Examples for this module along with various configurations can be found in the [
 | query_store_retention_period_in_days | int    | `"7"`           | no       | The query store capture interval in minutes. Allows to specify the interval in which the query metrics are aggregated. |
 | table_definition_cache               | int    | `"5000"`        | no       | The number of table definitions (from .frm files) that can be stored in the definition cache.                          |
 | table_open_cache                     | int    | `"5000"`        | no       | The number of open tables for all threads.                                                                             |
+| redirect_enabled                     | int    | `"OFF"`         | no       | Indicate server support redirection.                                                                                   |
 
 ## History
 
 | Date     | Release | Change                                                                                     |
 | -------- | ------- | ------------------------------------------------------------------------------------------ |
+| 20220516 | v4.1.3  | Add a setting for redirect mode for improved performance bypassing azure gateway           |
+| 20220413 | v4.1.2  | Disable attempt to create diag on kvs don't own                                            |
 | 20220406 | v4.1.1  | Fix a bug in the diagnostics section not calling metrics properly                          |
 | 20220214 | v4.1.0  | Allow changing the Storage Account Name                                                    |
 | 20211128 | v4.0.0  | Final refactor with sane defaults and optional advanced logic                              |

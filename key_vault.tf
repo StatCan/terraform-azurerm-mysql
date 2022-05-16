@@ -67,6 +67,8 @@ resource "azurerm_key_vault" "mysql" {
   tags = var.tags
 
   lifecycle {
-    ignore_changes = [tags]
+    ignore_changes = [
+      tags
+    ]
   }
 }
